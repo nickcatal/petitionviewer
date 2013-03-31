@@ -10,7 +10,7 @@ env = lambda e, d: environ[e] if environ.has_key(e) else d
 BASE = Path(__file__).absolute().ancestor(2)
 APP = Path(__file__).absolute().ancestor(1)
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
