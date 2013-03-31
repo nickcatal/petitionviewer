@@ -1,11 +1,18 @@
 <!doctype html>
 <html>
 <head>
-    <title>Response System</title>
-    <style type="text/css"></style>
+    <title>{% block title %}Whitehouse Petition Response Viewer{% endblock title %}</title>
     {% block social %}
+    <meta property="og:url" content="http://petitions.nickcatalano.com/">
+    <link rel="canonical" href="http://petitions.nickcatalano.com/"/>
     {% endblock social %}
+    <meta name="site" content="Whitehouse Petition Response Viewer">
+    <meta property="og:site_name" content="Whitehouse Petition Response Viewer" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css">
+    <style type="text/css">html {
+     overflow: -moz-scrollbars-vertical;
+     overflow: scroll;
+}</style>
 </head>
 <body>
         <div class="navbar navbar-fixed-top">

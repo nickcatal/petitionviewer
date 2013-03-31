@@ -1,7 +1,12 @@
 {% extends "wrapper.html" %}
 
+{% block title %}{{ response.title }} - WhiteHouse Petition Response Viewer{% endblock title %}
+
 {% block social %}
-    
+    <meta name="title" content="{{ response.title }}">
+    <meta property="og:title" content="{{ response.title }}">
+    <meta property="og:url" content="http://petitions.nickcatalano.com/{{ response.pk }}/{{ response.slug }}">
+    <link rel="canonical" href="http://petitions.nickcatalano.com/{{ response.pk }}/{{ response.slug }}"/>
 {% endblock social %}
 
 {% block content %}
