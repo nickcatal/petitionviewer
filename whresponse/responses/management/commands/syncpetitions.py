@@ -4,7 +4,6 @@ from whresponse.responses.models import Response, Petition
 
 import requests
 import bs4
-import pickle
 
 def all_petitions():
     raw = ""

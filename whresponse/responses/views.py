@@ -3,8 +3,6 @@ from django.views.generic.list import ListView
 
 from whresponse.responses.models import Response, Petition
 
-import pickle
-
 class ResponseListView(ListView):
     model = Response
     template_name = "index.html"
