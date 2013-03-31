@@ -10,6 +10,7 @@ class Response(models.Model):
     updated_at = models.DateTimeField(auto_now = True)
 
     class Meta:
+        ordering = ["-total_signatures"]
         verbose_name = ('Response')
         verbose_name_plural = ('Responses')
 
@@ -24,6 +25,7 @@ class Petition(models.Model):
     created_at = models.DateTimeField(auto_now = True, auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
     class Meta:
+        ordering = ["-signatures"]
         verbose_name = ('Petition')
         verbose_name_plural = ('Petitions')
 
