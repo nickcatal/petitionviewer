@@ -23,17 +23,6 @@ DATABASES = {
     'default': dj_database_url.config(default='postgres://localhost'),
 }
 
-if environ.has_key('AK_DBUSER'):
-    DATABASES['actionkit'] = {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': environ['AK_DBNAME'],
-        'USER': environ['AK_DBUSER'],
-        'PASSWORD': environ['AK_DBPASS'],
-        'HOST': env('AK_DBSERVER','client-db.actionkit.com'),
-        'PORT': '3306',
-    }
-
-
 ALLOWED_HOSTS = ['*']
 
 TIME_ZONE = 'America/New_York'
