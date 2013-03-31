@@ -33,7 +33,8 @@ if environ.has_key('AK_DBUSER'):
         'PORT': '3306',
     }
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['*']
 
 TIME_ZONE = 'America/New_York'
 
