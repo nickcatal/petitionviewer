@@ -1,0 +1,27 @@
+{% extends "wrapper.html" %}
+
+{% block social %}
+    
+{% endblock social %}
+
+{% block content %}
+
+
+
+
+<h1>{{ response.title }}</h1>
+<h4>In Response To:</h4>
+<ul>
+    {% for petition in petitions %}
+        <li><a href="https://petitions.whitehouse.gov{{ petition.url }}">{{ petition.title }}</a></li>
+    {% endfor %}
+</ul>
+{% autoescape off %}
+    {{ response.response }}
+{% endautoescape %}
+
+
+<p><a href="https://petitions.whitehouse.gov{{ response.url }}" class="btn">View The Full Response</a></p>
+
+
+{% endblock content %}
