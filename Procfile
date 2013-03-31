@@ -1,1 +1,1 @@
-web: gunicorn whresponse.wsgi -b 0.0.0.0:$PORT
+web: newrelic-admin run-program python manage.py gunicorn whresponse.wsgi -b 0.0.0.0:$PORT
