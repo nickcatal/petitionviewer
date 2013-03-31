@@ -15,7 +15,7 @@
 
 
 <h1>{{ response.title }}</h1>
-<h4>In Response {{ response.total_signatures }} Signatures To These Petitions:</h4>
+<h4>In Response {{ response.total_signatures }} Signatures To {% if petitions.count > 1 %}These{% else %}This{% endif %} {{ petitions.count }} Petition{{ petitions.count|pluralize }}:</h4>
 <ul>
     {% for petition in petitions %}
         <li><a href="https://petitions.whitehouse.gov{{ petition.url }}">{{ petition.title|title }}</a> -- {{ petition.signatures }} Signatures</li>
@@ -26,8 +26,8 @@
     {{ response.response }}
 {% endautoescape %}
 
-
 <p><a href="https://petitions.whitehouse.gov{{ response.url }}" class="btn">View The Full Response</a></p>
 
+<p>Added {{ response.created_at|date:"N j, Y" }}</p>
 
 {% endblock content %}
