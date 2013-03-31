@@ -11,10 +11,3 @@ class ResponseDetailView(DetailView):
     model = Response
     template_name = "response.html"
     context_object_name = "response"
-
-    def get_context_data(self, **kwargs):
-        context = super(ResponseDetailView, self).get_context_data(**kwargs)
-
-        context['petitions'] = Petition.objects.filter(response=context['response'])
-
-        return context

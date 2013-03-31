@@ -9,6 +9,9 @@ class Response(models.Model):
     created_at = models.DateTimeField(auto_now = True, auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
 
+    def petitions(self):
+        return Petition.objects.filter(response=self)
+
     class Meta:
         ordering = ["-total_signatures"]
         verbose_name = ('Response')
