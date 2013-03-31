@@ -15,12 +15,13 @@
 
 
 <h1>{{ response.title }}</h1>
-<h4>In Response To:</h4>
+<h4>In Response {{ response.total_signatures }} Signatures To These Petitions:</h4>
 <ul>
     {% for petition in petitions %}
-        <li><a href="https://petitions.whitehouse.gov{{ petition.url }}">{{ petition.title }}</a></li>
+        <li><a href="https://petitions.whitehouse.gov{{ petition.url }}">{{ petition.title|title }}</a> -- {{ petition.signatures }} Signatures</li>
     {% endfor %}
 </ul>
+
 {% autoescape off %}
     {{ response.response }}
 {% endautoescape %}
