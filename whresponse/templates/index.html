@@ -1,11 +1,11 @@
 {% extends "wrapper.html" %}
 {% block content %}
     <h1>Whitehouse Petition Responses</h1>
-    <p>I got tired of scrolling through the <a href="https://petitions.whitehouse.gov/responses">oddly sorted response page</a> on the Whitehouse 'We The People' petition site. So I decided to build this simple app to scrape their response page nightly, extract any new responses and display them using a dead-simple interface. If you want to view the original responses scroll to the bottom and click the button to visit the official response page on Whitehouse.gov</p>
-    <ol>
+    <p>There have been {{ object_list.count }} offical responses to petitions submitted to <a href="https://petitions.whitehouse.gov/">We The People</a>.<br>Petitions are ordered by the time which they were first pulled from Whitehouse.gov. The crawler runs daily.</p>
+    <ul>
     {% for response in object_list %}
-        <li><a href="{% url 'response' response.id %}{{ response.slug }}">{{ response.title }}</a> ({{ response.total_signatures }} Signatures to {{ response.petitions.count }} Petition{{ response.petitions.count|pluralize }})</li>
+        <li><a href="{% url 'response' response.id %}{{ response.slug }}">{{ response.title }}</a><br>{{ response.total_signatures }} Signatures to {{ response.petitions.count }} Petition{{ response.petitions.count|pluralize }} - Added to Viewer: {{ response.created_at.date }}</li>
     {% endfor %}
-    </ol>
+    </ul>
 
 {% endblock content %}

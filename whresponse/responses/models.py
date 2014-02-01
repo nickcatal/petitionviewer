@@ -13,7 +13,7 @@ class Response(models.Model):
         return Petition.objects.filter(response=self)
 
     class Meta:
-        ordering = ["-total_signatures"]
+        ordering = ["-created_at", "-total_signatures"]
         verbose_name = ('Response')
         verbose_name_plural = ('Responses')
 
@@ -28,10 +28,9 @@ class Petition(models.Model):
     created_at = models.DateTimeField(auto_now = True, auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
     class Meta:
-        ordering = ["-signatures"]
+        ordering = ["created_at", "-signatures"]
         verbose_name = ('Petition')
         verbose_name_plural = ('Petitions')
 
     def __unicode__(self):
         return self.title
-    
