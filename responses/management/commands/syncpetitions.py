@@ -91,4 +91,3 @@ class Command(BaseCommand):
                     if pcreated:
                         print "Created Petition %s (%s)" % (petition.title, petition.pk)
                 print "Created Response %s (%s)" % (response.title, response.pk)
-
