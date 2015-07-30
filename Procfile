@@ -1,1 +1,1 @@
-web: gunicorn whresponse.wsgi -b 0.0.0.0:$PORT
+web: bin/start-pgbouncer-stunnel bin/start-nginx newrelic-admin run-program gunicorn -k gevent -c gunicorn_config.py whresponse.wsgi

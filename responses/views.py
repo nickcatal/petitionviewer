@@ -1,7 +1,7 @@
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
-from whresponse.responses.models import Response, Petition
+from responses.models import Response, Petition
 
 class ResponseListView(ListView):
     model = Response

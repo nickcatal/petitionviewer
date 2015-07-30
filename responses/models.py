@@ -6,7 +6,7 @@ class Response(models.Model):
     total_signatures = models.IntegerField(verbose_name=u'Total Signatures')
     response = models.TextField(verbose_name=u'Full White House Response')
     url = models.CharField(verbose_name=u'Whitehouse URL', max_length=250)
-    created_at = models.DateTimeField(auto_now = True, auto_now_add = True)
+    created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
 
     def petitions(self):
@@ -25,7 +25,7 @@ class Petition(models.Model):
     title = models.CharField(verbose_name=u'Petition Title', max_length=250)
     url = models.URLField(verbose_name=u'Petition URL')
     signatures = models.IntegerField()
-    created_at = models.DateTimeField(auto_now = True, auto_now_add = True)
+    created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
     class Meta:
         ordering = ["created_at", "-signatures"]

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from whresponse.responses.models import Response, Petition
+from responses.models import Response, Petition
 
 class PetitionInline(admin.StackedInline):
     model = Petition

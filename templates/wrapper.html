@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html>
 <head>
@@ -18,7 +19,7 @@
     
     <meta name="site" content="Whitehouse Petition Response Viewer">
     <meta property="og:site_name" content="Whitehouse Petition Response Viewer" />
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
     <style type="text/css">html {
      overflow-y: -moz-scrollbars-vertical;
      overflow-y: scroll;

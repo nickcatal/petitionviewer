@@ -1,13 +1,19 @@
-Django==1.5.1
-South==0.7.6
-Unipath==0.2.1
-beautifulsoup4==4.1.3
-dj-database-url==0.2.1
-gunicorn==0.17.2
-ipython==0.13.1
-psycopg2==2.4.6
+# pylibmc has to be explictly added to requirements for heroku's python
+# buildpack
+pylibmc==1.4.3
+
+Django==1.8.2
+psycopg2==2.6
+django-environ==0.3.0
+newrelic==2.52.0.40
+gevent==1.0
+greenlet==0.4.1
+gunicorn==18.0
+whitenoise==2.0.2
+
 requests==1.1.0
-wsgiref==0.1.2
-django-storages==1.1.5
-boto==2.6.0
-lxml==3.1.1
+beautifulsoup4==4.1.3
+lxml==3.4.4
+
+django-debug-toolbar==1.3.0
+django-heroku-memcacheify==0.8

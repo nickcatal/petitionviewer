@@ -1,161 +1,117 @@
-import dj_database_url
-from os import environ
-from sys import exc_info
+"""
+Django settings for whpetition project.
+"""
+import os
 
-from unipath import FSPath as Path
+import environ
+from memcacheify import memcacheify
 
-# Helper lambda for gracefully degrading env variables. Taken from http://rdegges.com/devops-django-part-3-the-heroku-way
-env = lambda e, d: environ[e] if environ.has_key(e) else d
-
-BASE = Path(__file__).absolute().ancestor(2)
-APP = Path(__file__).absolute().ancestor(1)
-
-DEBUG = False
-TEMPLATE_DEBUG = DEBUG
-
-ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+root = environ.Path(__file__) - 3
+env = environ.Env(
+    DEBUG=(bool, False),
+    ALLOWED_HOSTS=(list, [''])
 )
+environ.Env.read_env('.env')
 
-MANAGERS = ADMINS
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+SECRET_KEY = env('SECRET_KEY')
+DEBUG = env('DEBUG')
+
+ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
 DATABASES = {
-    'default': dj_database_url.config(default='postgres://localhost'),
+    'default': env.db(),
 }
 
-ALLOWED_HOSTS = ['*']
+# Attempt to get the memcache info from Heroku.
+default_cache = memcacheify()['default']
 
-TIME_ZONE = 'America/New_York'
+# memcacheify will use the LocMemCache if there is no heroku cache. So if we
+# see the 'LocMemCache' we know that memcachify is not running on a heroku dyno
+# that is setup for memcached
+if default_cache['BACKEND'] == 'django.core.cache.backends.locmem.LocMemCache':
+    default_cache = env.cache()
 
-LANGUAGE_CODE = 'en-us'
+CACHES = {
+    'default': default_cache,
+}
 
-SITE_ID = 1
-
-USE_I18N = True
-USE_L10N = True
-
-USE_TZ = True
-
-MEDIA_URL = '/media/'
-
-if environ.has_key('AWS_STORAGE_BUCKET'):
-    AWS_STORAGE_BUCKET_NAME = environ['AWS_STORAGE_BUCKET']
-    AWS_ACCESS_KEY_ID = environ['AWS_ACCESS_KEY_ID']
-    AWS_SECRET_ACCESS_KEY = environ['AWS_SECRET_ACCESS_KEY']
-    STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-    S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
-    STATIC_URL = S3_URL
-    ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
-else:
-    STATIC_URL = '/static/'
-
-# Additional locations of static files
-MEDIA_ROOT = BASE.child('media')
-STATIC_ROOT = BASE.child('static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    BASE.child('ui'),
+    os.path.join(BASE_DIR, 'ui'),
 )
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
-# List of finder classes that know how to find static files in
-# various locations.
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-)
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = env('SECRET_KEY', 'fawefawief123123bnqawf123j253blrq1231l23ubqwfawelu123')
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
-)
-
-MIDDLEWARE_CLASSES = (
-    'django.middleware.cache.CacheMiddleware',
-    'django.middleware.gzip.GZipMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'whresponse.middleware.DisableStaffCachingMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
-
-ROOT_URLCONF = 'whresponse.urls'
-
-TEMPLATE_DIRS = [APP.child('templates')]
-
+# Application definition
 INSTALLED_APPS = (
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    # Enable Django Admin
-    'django.contrib.admin',
 
-    # Heroku Specific Apps Here
-    'gunicorn',
-
-    # 3rd Party
-    'storages',
-    'boto',
-    'south',
-
-    # 1st Party Apps
-    'whresponse.responses'
-
-
+    'responses'
 )
 
+MIDDLEWARE_CLASSES = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+)
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'default-location'
-    }
-}
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            'templates'
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
-CACHE_MIDDLEWARE_SECONDS = 3600
+ROOT_URLCONF = 'whresponse.urls'
 
-# Honor the 'X-Forwarded-Proto' header for request.is_secure()
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+WSGI_APPLICATION = 'whresponse.wsgi.application'
+
+
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
     'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+        },
     },
     'loggers': {
         'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
+            'handlers':['console'],
             'propagate': True,
-        },
-    }
+            'level':'DEBUG',
+        }
+    },
 }
-
-# Import from localsettings
-try:
-    from whresponse.localsettings import *
-except ImportError:
-    pass

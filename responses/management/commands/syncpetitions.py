@@ -1,6 +1,8 @@
+import time
+
 from django.core.management.base import BaseCommand, CommandError
 
-from whresponse.responses.models import Response, Petition
+from responses.models import Response, Petition
 
 import requests
 import bs4
@@ -24,11 +26,10 @@ def all_petitions():
     return final
 
 def grab_response(url):
+    print "Grabbing Response " + unicode(url)
     response = requests.get('https://petitions.whitehouse.gov%s' % url)
     soup = bs4.BeautifulSoup(response.content, "lxml")
 
-
-    
     petition_response_list = soup.find('div',{'class':'petition-response'}).findAll('p')
     petition_response = "".join([str(x) for x in petition_response_list])
 
