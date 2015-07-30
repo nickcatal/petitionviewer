@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Management file for We the People Petition Viewer"""
 import os
 import sys
 

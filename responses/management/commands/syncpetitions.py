@@ -1,52 +1,57 @@
-import time
-
-from django.core.management.base import BaseCommand, CommandError
+"""Management command to sync petitions with Whitehouse Website"""
+from django.core.management.base import BaseCommand
 
 from responses.models import Response, Petition
 
 import requests
 import bs4
 
+
 def all_petitions():
     raw = ""
     x = 0
     final = []
     while True:
-        response = requests.get("https://petitions.whitehouse.gov/responses/more/all/%s/2/0/" % x).json()['markup']
-        if response == "":
+        response = requests.get(
+            "https://petitions.whitehouse.gov/responses/more/all/%s/2/0/" % x)
+        markup = response.json()['markup']
+        if markup == "":
             break
-        raw += response
+        raw += markup
         x = x+1
 
     soup = bs4.BeautifulSoup(raw, "lxml")
-    raw_titles = soup.find_all('div', { "class": "title" })
+    raw_titles = soup.find_all('div', {"class": "title"})
     for x in raw_titles:
         final += [[x.string,x.find('a')['href']]]
 
     return final
+
 
 def grab_response(url):
     print "Grabbing Response " + unicode(url)
     response = requests.get('https://petitions.whitehouse.gov%s' % url)
     soup = bs4.BeautifulSoup(response.content, "lxml")
 
-    petition_response_list = soup.find('div',{'class':'petition-response'}).findAll('p')
+    petition_response_list = soup.find(
+        'div', {'class':'petition-response'}).findAll('p')
     petition_response = "".join([str(x) for x in petition_response_list])
 
 
-    petition_sections = soup.findAll('div',{'class': 'entry'})
+    petition_sections = soup.findAll('div', {'class': 'entry'})
 
     petitions = []
     totalsig = 0
 
     for x in petition_sections:
         link = x.find('a')
-        rawnum = x.find('span',{'class': 'num'}).text
-        num = int(rawnum.replace(',',''))
-        petitions += [[num,link['href'],link.text]]
+        rawnum = x.find('span', {'class': 'num'}).text
+        num = int(rawnum.replace(',', ''))
+        petitions += [[num,link['href'], link.text]]
         totalsig += num
 
     return petition_response, petitions, totalsig
+
 
 def master_grabber():
     allpetitions = all_petitions()
@@ -65,6 +70,7 @@ def master_grabber():
 
     return final
 
+
 class Command(BaseCommand):
     help = "Sync Whitehouse Content"
 
@@ -79,8 +85,9 @@ class Command(BaseCommand):
                 'response': x['text'],
                 'url': x['url']
             }
-            
-            response, created = Response.objects.get_or_create(slug=slug,defaults=defaults)
+
+            response, created = Response.objects.get_or_create(
+                slug=slug, defaults=defaults)
             if created:
                 for y in x['petitions']:
                     defaults = {
@@ -88,7 +95,10 @@ class Command(BaseCommand):
                         'title': y[2],
                         'signatures': y[0]
                     }
-                    petition, pcreated = Petition.objects.get_or_create(url=y[1],defaults=defaults)
+                    petition, pcreated = Petition.objects.get_or_create(
+                        url=y[1], defaults=defaults)
                     if pcreated:
-                        print "Created Petition %s (%s)" % (petition.title, petition.pk)
-                print "Created Response %s (%s)" % (response.title, response.pk)
+                        print "Created Petition %s (%s)" % (
+                            petition.title, petition.pk)
+                print "Created Response %s (%s)" % (
+                    response.title, response.pk)

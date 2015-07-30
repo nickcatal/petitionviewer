@@ -1,6 +1,7 @@
 """
 WSGI config for whresponse project.
 """
+# pylint: disable=invalid-name
 import os
 
 from django.core.wsgi import get_wsgi_application

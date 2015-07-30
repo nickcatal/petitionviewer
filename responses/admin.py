@@ -1,6 +1,8 @@
+"""Admin functionality for responses app"""
 from django.contrib import admin
 
 from responses.models import Response, Petition
+
 
 class PetitionInline(admin.StackedInline):
     model = Petition
@@ -20,6 +22,7 @@ class ResponseAdmin(admin.ModelAdmin):
     ]
     readonly_fields = ['url']
     inlines = [PetitionInline]
+
 
 admin.site.register(Response, ResponseAdmin)
 admin.site.register(Petition)

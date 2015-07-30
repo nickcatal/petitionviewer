@@ -1,6 +1,7 @@
 """
 Django settings for whpetition project.
 """
+# pylint: disable=invalid-name
 import os
 
 import environ
