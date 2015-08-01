@@ -12,5 +12,6 @@ admin.autodiscover()
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', ResponseListView.as_view(), name='list'),
-    url(r'^(?P<pk>[0-9]+)/', ResponseDetailView.as_view(), name='response'),
+    url(r'^(?P<pk>[0-9]+)/(?P<slug>[\d\w-]+)',
+        ResponseDetailView.as_view(), name='response'),
 ]

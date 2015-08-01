@@ -5,28 +5,23 @@
 {% block social %}
     <meta name="title" content="{{ response.title }}">
     <meta property="og:title" content="{{ response.title }}">
-    <meta property="og:url" content="http://petitions.nickc.at/{{ response.pk }}/{{ response.slug }}">
-    <link rel="canonical" href="http://petitions.nickc.at/{{ response.pk }}/{{ response.slug }}"/>
+    <meta property="og:url" content="https://petitions.nickc.at{% url 'response' response.pk response.slug %}">
+    <link rel="canonical" href="https://petitions.nickc.at{% url 'response' response.pk response.slug %}"/>
 {% endblock social %}
 
 {% block content %}
 
-
-
-
 <h1>{{ response.title }}</h1>
-<h4>In Response {{ response.total_signatures }} Signatures To {% if response.petitions.count > 1 %}These{% else %}This{% endif %} {{ response.petitions.count }} Petition{{ response.petitions.count|pluralize }}:</h4>
+<h4>In response to {{ response.total_signatures }} signatures to th{{ response.petition_set.count|pluralize:"is,ese" }} {{ response.petition_set.count }} petition{{ response.petition_set.count|pluralize }}:</h4>
 <ul>
-    {% for petition in response.petitions %}
-        <li><a href="https://petitions.whitehouse.gov{{ petition.url }}">{{ petition.title|title }}</a> -- {{ petition.signatures }} Signatures</li>
+    {% for petition in response.petition_set.all %}
+        <li><a href="{{ petition.official_url }}">{{ petition.title|title }}</a> -- {{ petition.signatures }} Signatures</li>
     {% endfor %}
 </ul>
 
-{% autoescape off %}
-    {{ response.response }}
-{% endautoescape %}
+{{ response.response|safe }}
 
-<p><a href="https://petitions.whitehouse.gov{{ response.url }}" class="btn">View The Full Response</a></p>
+<p><a href="{{ response.official_url }}" class="btn">View The Full Response</a></p>
 
 <p>Added {{ response.created_at|date:"N j, Y" }}</p>
 

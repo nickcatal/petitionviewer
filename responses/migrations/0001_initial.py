@@ -14,11 +14,11 @@ class Migration(migrations.Migration):
             name='Petition',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('title', models.CharField(max_length=250, verbose_name='Petition Title')),
-                ('url', models.URLField(verbose_name='Petition URL')),
-                ('signatures', models.IntegerField()),
+                ('title', models.CharField(max_length=250)),
+                ('url', models.CharField(max_length=250, verbose_name='Whitehouse URL')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
+                ('signatures', models.IntegerField()),
             ],
             options={
                 'ordering': ['created_at', '-signatures'],
@@ -30,13 +30,13 @@ class Migration(migrations.Migration):
             name='Response',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('slug', models.SlugField(max_length=250)),
-                ('title', models.CharField(max_length=250, verbose_name='Response Title')),
-                ('total_signatures', models.IntegerField(verbose_name='Total Signatures')),
-                ('response', models.TextField(verbose_name='Full White House Response')),
+                ('title', models.CharField(max_length=250)),
                 ('url', models.CharField(max_length=250, verbose_name='Whitehouse URL')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
+                ('slug', models.SlugField(max_length=250)),
+                ('total_signatures', models.IntegerField(verbose_name='Total Signatures')),
+                ('response', models.TextField(verbose_name='Full White House Response')),
             ],
             options={
                 'ordering': ['-created_at', '-total_signatures'],

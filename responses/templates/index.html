@@ -4,7 +4,7 @@
     <p>There have been {{ object_list.count }} offical responses to petitions submitted to <a href="https://petitions.whitehouse.gov/">We The People</a>.<br>As official responses are not dated, responses are ordered by the time which they were first pulled from Whitehouse.gov. The crawler runs daily and was first run on March 31st, 2013.</p>
     <ul>
     {% for response in object_list %}
-        <li><a href="{% url 'response' response.id %}{{ response.slug }}">{{ response.title }}</a><br>{{ response.total_signatures }} Signatures to {{ response.petitions.count }} Petition{{ response.petitions.count|pluralize }} - Added to Viewer: {{ response.created_at.date }}</li>
+        <li><a href="{% url 'response' response.pk response.slug %}">{{ response.title }}</a><br>{{ response.total_signatures }} Signatures to {{ response.petitions.count }} Petition{{ response.petitions.count|pluralize }} - Added to Viewer: {{ response.created_at.date }}</li>
     {% endfor %}
     </ul>
 
