@@ -39,7 +39,7 @@ http {
         ssl_client_certificate /app/config/cloudflare.crt;
         ssl_verify_client on;
 
-        if ($ssl_client_verify != "SUCCESS") {
+        if ($ssl_client_verify != "NONE") {
             return 403;
         }
 
