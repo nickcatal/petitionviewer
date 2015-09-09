@@ -17,7 +17,7 @@ http {
 
     server_tokens off;
 
-    log_format l2met 'measure#nginx.service=$request_time request_id=$http_x_request_id verify=$ssl_client_verify';
+    log_format l2met 'measure#nginx.service=$request_time request_id=$http_x_request_id verify=$ssl_client_verify fingerprint=$ssl_client_fingerprint protocol=$ssl_protocol ssl_server_name=$ssl_server_name';
     access_log logs/nginx/access.log l2met;
     error_log logs/nginx/error.log;
 
@@ -39,7 +39,7 @@ http {
         ssl_client_certificate /app/config/cloudflare.crt;
         ssl_verify_client on;
 
-        if ($ssl_client_verify != "NONE") {
+        if ($ssl_client_verify != "FAILURE") {
             return 403;
         }
 
