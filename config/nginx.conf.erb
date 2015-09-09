@@ -37,7 +37,7 @@ http {
         server_name _;
         keepalive_timeout 5;
         ssl_client_certificate /app/config/cloudflare.crt;
-        ssl_verify_client <%= ENV['CLOUDFLARE_VERIFICATION'] || 'off' %>;
+        ssl_verify_client on;
 
         location / {
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
