@@ -43,7 +43,6 @@ http {
         real_ip_header  X-Forwarded-For;
 
         # https://www.cloudflare.com/ips
-        # IPv4
         allow 103.21.244.0/22;
         allow 103.22.200.0/22;
         allow 103.31.4.0/22;
@@ -59,12 +58,6 @@ http {
         allow 198.41.128.0/17;
         allow 199.27.128.0/21;
 
-        # IPv6
-        allow 2400:cb00::/32;
-        allow 2405:8100::/32;
-        allow 2405:b500::/32;
-        allow 2606:4700::/32;
-        allow 2803:f800::/32;
         deny all;
         <% end %>
 
